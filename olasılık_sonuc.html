@@ -56,6 +56,11 @@
                 <button class="btn-coloreffect" id="numberData" onclick="sayfa()">HESAPLA
             </button>
             
+            <button class="button green shield" onclick="sayiUret()">SAYI ÜRET</button>
+            
+           
+
+            
                 <p style="text-align: center; font-size: 18px;">Yeni veri seti girmek için <a href= "olasılık_sonuc.html">tıklayınız.</a></p>
             </li>
         </ul>
@@ -106,6 +111,23 @@
         
         <script src="kodlar.js"></script>
         <script src="app.js"></script>
+
+        <script>
+         
+         function sayiUret() {
+           
+	        var sayilar =[]
+		    for(var i=0;i<10;i++){
+		        sayilar[i]=Math.floor(Math.random() * 100) ;
+		
+		    }
+            document.getElementById("data").value = sayilar;
+            
+        }
+
+
+        </script>
+        
         
         
         
