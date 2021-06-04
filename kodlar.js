@@ -167,38 +167,60 @@ var geometrikOrtHesapla = function(params){
   
 }
 
-var histogramOlustur = function(params){
-  params.sort(function(a,b){return a-b});
 
-  var minValue = params[0];
-  var len = params.length;
-  var maxValue = params[len-1];
+ var histogramOlustur=function (params) {
+  params.sort(function(a, b){
+    return a - b;
+  });
 
+  var tempParams = params.map(function(el){
+    return parseInt(el);
+  });
+
+  var len = tempParams.length;
+  var minValue = tempParams[0];
+  var maxValue = tempParams[len - 1];
   var range = maxValue - minValue;
+  var classNumber =1.0 +  3.3 * Math.log10(len);
+  var grupGenisligi = Math.round(parseFloat(range) / parseFloat(classNumber)) ;
+  
+ 
+ 
 
-  var classNumber = 1 + (3.3* Math.log10(len));
+  labels = Array(Math.round(classNumber));
+  data = Array(Math.round(classNumber) + 1);
 
-  var grupGenişliği =Math.round( parseFloat(range) / parseFloat(classNumber));
 
-  var labels = new Array(Math.round(classNumber));
-  labels[0] = minValue;
+  
 
-  for(var i = 1; i<= Math.round(classNumber);i++){
-    labels[i] = labels[i-1] + grupGenişliği;
-  }
+  for (var i = 0; i < Math.round(classNumber +1); i++) {
 
-  var data = new Array(Math.round(classNumber));
-  for(var j = 0; j <= Math.round(classNumber);j++){
-    var sayac = 0;
-    for(var k = 0; k<len ;k++){
-      if(params[k]>=labels[j] && params[k] <= (labels[j]+ grupGenişliği -1)){
-      sayac++;
+    let ilk = minValue + grupGenisligi*i;
+    let son = (minValue + grupGenisligi - 1) + grupGenisligi*i;
+
+    labels[i] = ilk;
+    labels[i] += ' - ' + parseInt(son);
+
+   
+      var sayac = 0;
+      data[i]=sayac;
+      for(var k = 0; k<len ;k++){
+        if(tempParams[k]>=ilk && tempParams[k] <= son ){
+        sayac++;
+        }
+
       }
-    }
-    data[j]=sayac;
+      data[i]=sayac;
+      
+   
   }
+
+  data[data.length] = 0;
+
+
+
   var chart= new Chart(document.getElementById('chart'),{
-    type:'line',
+    type:'bar',
     data: {
     labels: labels,
     datasets: [{
@@ -218,6 +240,10 @@ var histogramOlustur = function(params){
 
   });
   return chart;
+
+
+
+
 
 }
 
